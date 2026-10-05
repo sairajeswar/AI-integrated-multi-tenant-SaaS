@@ -1,0 +1,26 @@
+{
+  "name": "silver-saas-platform",
+  "version": "1.0.0",
+  "description": "Enterprise-grade AI-Integrated Multi-Tenant SaaS Platform for Small Businesses with Cloud Integration",
+  "main": "server/index.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js",
+    "test": "node tests/run-tests.js"
+  },
+  "keywords": [
+    "saas",
+    "multi-tenant",
+    "ai",
+    "cloud-integration",
+    "silver-theme",
+    "small-business"
+  ],
+  "author": "Antigravity AI",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
+  }
+}

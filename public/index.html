@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AuraSilver SaaS - Multi-Tenant AI Platform for Small Business</title>
+  <link rel="stylesheet" href="/css/silver-theme.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23cbd5e1'/><text y='.9em' font-size='70' x='15' fill='%230f172a'>⚡</text></svg>">
+</head>
+<body>
+  <!-- Ambient silver mesh background layer -->
+  <div class="silver-mesh-bg"></div>
+
+  <!-- Top App Navigation -->
+  <header class="silver-header" id="appHeader">
+    <div class="header-container">
+      <div class="brand-wrapper" id="brandHomeBtn">
+        <div class="silver-logo-icon">⚡</div>
+        <div>
+          <div class="brand-title">AuraSilver</div>
+          <div class="brand-subtitle">AI Multi-Tenant Cloud SaaS</div>
+        </div>
+      </div>
+
+      <!-- Center: Tenant Organization Switcher -->
+      <div style="display:flex; align-items:center; gap:12px;">
+        <div class="tenant-switcher-box" id="tenantSwitcherBtn" title="Switch Organization Tenant">
+          <div class="tenant-icon">🏢</div>
+          <div>
+            <div style="font-size:0.65rem; color:#64748b; font-weight:600; text-transform:uppercase;">Active Tenant</div>
+            <div class="tenant-name-text" id="headerTenantName">Loading Tenant...</div>
+          </div>
+          <span style="font-size:0.75rem; color:#94a3b8;">▼</span>
+        </div>
+
+        <!-- Cloud Telemetry Pill -->
+        <div class="cloud-telemetry-pill" id="cloudTelemetryPill">
+          <div class="pulse-dot"></div>
+          <span id="cloudStatusText">AWS S3 · us-east-1 · 24ms</span>
+        </div>
+      </div>
+
+      <!-- Right: User Profile & Actions -->
+      <div style="display:flex; align-items:center; gap:12px;">
+        <span class="badge badge-silver" id="headerRoleBadge">Owner</span>
+        <div style="font-size:0.875rem; font-weight:600; color:#1e293b;" id="headerUserName">Alex Rivera</div>
+        <button class="btn-silver btn-sm btn-silver-outline" id="logoutBtn" title="Sign Out">Sign Out</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navigation Tab Bar -->
+  <nav class="silver-nav-bar" id="appNavBar">
+    <div class="nav-tabs-container">
+      <button class="nav-tab-btn active" data-tab="dashboard">
+        <span>📊</span> Dashboard
+      </button>
+      <button class="nav-tab-btn" data-tab="crm">
+        <span>👥</span> CRM & Accounts
+      </button>
+      <button class="nav-tab-btn" data-tab="invoices">
+        <span>🧾</span> Invoices & Billing
+      </button>
+      <button class="nav-tab-btn" data-tab="inventory">
+        <span>📦</span> Inventory & Supply
+      </button>
+      <button class="nav-tab-btn" data-tab="ai-hub">
+        <span>🤖</span> AI Copilot & Insights
+      </button>
+      <button class="nav-tab-btn" data-tab="cloud">
+        <span>☁️</span> Cloud Storage & Webhooks
+      </button>
+      <button class="nav-tab-btn" data-tab="settings">
+        <span>⚙️</span> Organization & Team
+      </button>
+    </div>
+  </nav>
+
+  <!-- Main Workspace -->
+  <main class="workspace-container">
+    
+    <!-- TAB 1: DASHBOARD OVERVIEW -->
+    <section id="tab-dashboard" class="tab-pane active">
+      <!-- High Level KPIs -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-header">
+            <span class="stat-title">Realized Revenue</span>
+            <span class="stat-icon">💰</span>
+          </div>
+          <div class="stat-value" id="kpiRevenue">$0.00</div>
+          <div class="stat-footer">
+            <span class="badge badge-paid">↑ 18.4%</span>
+            <span>vs previous quarter</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <span class="stat-title">Pending Receivables</span>
+            <span class="stat-icon">⏳</span>
+          </div>
+          <div class="stat-value" id="kpiReceivables">$0.00</div>
+          <div class="stat-footer">
+            <span class="badge badge-pending">Active</span>
+            <span>Awaiting client payment</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <span class="stat-title">Deal Pipeline Value</span>
+            <span class="stat-icon">📈</span>
+          </div>
+          <div class="stat-value" id="kpiPipeline">$0.00</div>
+          <div class="stat-footer">
+            <span class="badge badge-silver" id="kpiCustomerCount">0 Accounts</span>
+            <span>Active CRM prospects</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <span class="stat-title">Inventory Health</span>
+            <span class="stat-icon">⚠️</span>
+          </div>
+          <div class="stat-value" id="kpiLowStock">0</div>
+          <div class="stat-footer">
+            <span class="badge badge-low-stock" id="kpiStockBadge">Optimal</span>
+            <span>SKUs below reorder threshold</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts & Intelligence Row -->
+      <div style="display:grid; grid-template-columns: 2fr 1.1fr; gap:24px; margin-bottom:24px;">
+        <!-- Left: Revenue & Cashflow Vector Chart -->
+        <div class="silver-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+            <div>
+              <h2 style="font-size:1.1rem; font-weight:700;">Revenue Velocity & Cash Inflow</h2>
+              <p style="font-size:0.8rem; color:#64748b;">Dynamic cashflow performance across billing cycles</p>
+            </div>
+            <span class="badge badge-silver">Real-Time Sync</span>
+          </div>
+          <div id="revenueChartContainer" style="min-height:240px;"></div>
+        </div>
+
+        <!-- Right: AI Executive Insights Card -->
+        <div class="silver-card" style="display:flex; flex-direction:column; justify-content:space-between;">
+          <div>
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+              <span style="font-size:1.25rem;">🤖</span>
+              <h3 style="font-size:1.05rem; font-weight:700;">AI Business Copilot Summary</h3>
+            </div>
+            <div id="dashboardAiSnippet" style="font-size:0.85rem; color:#334155; line-height:1.6; background:#ffffff; padding:14px; border-radius:10px; border:1px solid #e2e8f0;">
+              Analyzing tenant metrics...
+            </div>
+          </div>
+          <div style="margin-top:16px; display:flex; gap:10px;">
+            <button class="btn-silver btn-silver-primary" style="flex:1;" id="dashOpenAiBtn">Ask Copilot</button>
+            <button class="btn-silver btn-silver-outline" id="dashForecastBtn">90-Day Forecast</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Activity Tables Row -->
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:24px;">
+        <!-- Recent Invoices -->
+        <div class="silver-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+            <h3 style="font-size:1rem; font-weight:700;">Recent Invoices</h3>
+            <button class="btn-silver btn-sm" id="dashNewInvoiceBtn">+ Create Invoice</button>
+          </div>
+          <div class="table-responsive">
+            <table class="silver-table">
+              <thead>
+                <tr>
+                  <th>Invoice</th>
+                  <th>Customer</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="dashInvoiceTableBody">
+                <tr><td colspan="4" style="text-align:center; color:#94a3b8;">Loading invoices...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Inventory Alerts -->
+        <div class="silver-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+            <h3 style="font-size:1rem; font-weight:700;">Stock & Inventory Status</h3>
+            <button class="btn-silver btn-sm" id="dashNewItemBtn">+ Add Item</button>
+          </div>
+          <div class="table-responsive">
+            <table class="silver-table">
+              <thead>
+                <tr>
+                  <th>SKU</th>
+                  <th>Product</th>
+                  <th>Qty</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="dashInventoryTableBody">
+                <tr><td colspan="4" style="text-align:center; color:#94a3b8;">Loading inventory...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: CRM & ACCOUNTS -->
+    <section id="tab-crm" class="tab-pane" style="display:none;">
+      <div class="silver-card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:12px;">
+          <div>
+            <h2 style="font-size:1.25rem; font-weight:700;">Small Business CRM & Client Pipeline</h2>
+            <p style="font-size:0.825rem; color:#64748b;">Manage customer accounts, deal value, and relationship lifecycle.</p>
+          </div>
+          <div style="display:flex; gap:12px;">
+            <input type="text" id="crmSearchInput" class="silver-input" placeholder="Search clients, email, company..." style="width:240px;">
+            <select id="crmStatusFilter" class="silver-select" style="width:140px;">
+              <option value="">All Stages</option>
+              <option value="lead">Leads</option>
+              <option value="opportunity">Opportunities</option>
+              <option value="active">Active Clients</option>
+              <option value="churned">Churned</option>
+            </select>
+            <button class="btn-silver btn-silver-primary" id="openAddCustomerModalBtn">+ Add Customer</button>
+          </div>
+        </div>
+
+        <!-- Pipeline Stage Counters -->
+        <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:12px; margin-bottom:20px;">
+          <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:8px; padding:12px; text-align:center;">
+            <div style="font-size:0.75rem; color:#64748b; font-weight:600;">LEADS</div>
+            <div style="font-size:1.2rem; font-weight:800; color:#0f172a;" id="crmLeadCount">0</div>
+          </div>
+          <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:8px; padding:12px; text-align:center;">
+            <div style="font-size:0.75rem; color:#64748b; font-weight:600;">OPPORTUNITIES</div>
+            <div style="font-size:1.2rem; font-weight:800; color:#0f172a;" id="crmOppCount">0</div>
+          </div>
+          <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:8px; padding:12px; text-align:center;">
+            <div style="font-size:0.75rem; color:#64748b; font-weight:600;">ACTIVE CLIENTS</div>
+            <div style="font-size:1.2rem; font-weight:800; color:#065f46;" id="crmActiveCount">0</div>
+          </div>
+          <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:8px; padding:12px; text-align:center;">
+            <div style="font-size:0.75rem; color:#64748b; font-weight:600;">TOTAL PIPELINE</div>
+            <div style="font-size:1.2rem; font-weight:800; color:#0f172a;" id="crmTotalValue">$0</div>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-responsive">
+          <table class="silver-table">
+            <thead>
+              <tr>
+                <th>Customer / Contact</th>
+                <th>Company</th>
+                <th>Phone</th>
+                <th>Deal Value</th>
+                <th>Stage</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="crmCustomersTableBody">
+              <tr><td colspan="6" style="text-align:center; color:#94a3b8;">Loading customer directory...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: INVOICES & BILLING -->
+    <section id="tab-invoices" class="tab-pane" style="display:none;">
+      <div class="silver-card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:12px;">
+          <div>
+            <h2 style="font-size:1.25rem; font-weight:700;">Smart Invoicing & Accounts Receivable</h2>
+            <p style="font-size:0.825rem; color:#64748b;">Issue professional invoices with automated tax calculations and instant cloud tracking.</p>
+          </div>
+          <div style="display:flex; gap:12px;">
+            <select id="invoiceStatusFilter" class="silver-select" style="width:150px;">
+              <option value="">All Invoices</option>
+              <option value="pending">Pending</option>
+              <option value="paid">Paid</option>
+              <option value="overdue">Overdue</option>
+            </select>
+            <button class="btn-silver btn-silver-primary" id="openAddInvoiceModalBtn">+ Create Invoice</button>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-responsive">
+          <table class="silver-table">
+            <thead>
+              <tr>
+                <th>Invoice #</th>
+                <th>Client</th>
+                <th>Issue Date</th>
+                <th>Due Date</th>
+                <th>Subtotal</th>
+                <th>Total (w/ Tax)</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="invoicesTableBody">
+              <tr><td colspan="8" style="text-align:center; color:#94a3b8;">Loading invoices...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: INVENTORY -->
+    <section id="tab-inventory" class="tab-pane" style="display:none;">
+      <div class="silver-card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:12px;">
+          <div>
+            <h2 style="font-size:1.25rem; font-weight:700;">Inventory Catalog & Stock Control</h2>
+            <p style="font-size:0.825rem; color:#64748b;">Keep stock balanced with automated safety threshold triggers and lead time optimization.</p>
+          </div>
+          <div style="display:flex; gap:12px;">
+            <label style="display:flex; align-items:center; gap:6px; font-size:0.85rem; font-weight:600; cursor:pointer;">
+              <input type="checkbox" id="inventoryLowStockOnly"> Show Low Stock Only
+            </label>
+            <button class="btn-silver btn-silver-primary" id="openAddInventoryModalBtn">+ Add Product SKU</button>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="silver-table">
+            <thead>
+              <tr>
+                <th>SKU</th>
+                <th>Product Name</th>
+                <th>Category</th>
+                <th>Quantity</th>
+                <th>Safety Buffer</th>
+                <th>Unit Price</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="inventoryTableBody">
+              <tr><td colspan="8" style="text-align:center; color:#94a3b8;">Loading inventory catalog...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: AI COPILOT & INTELLIGENCE HUB -->
+    <section id="tab-ai-hub" class="tab-pane" style="display:none;">
+      <div class="ai-copilot-container">
+        <!-- Left: Interactive Chat with Copilot -->
+        <div class="chat-box">
+          <div style="padding:16px 20px; border-bottom:1px solid #cbd5e1; display:flex; justify-content:space-between; align-items:center; background:#ffffff;">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <div style="width:32px; height:32px; border-radius:8px; background:linear-gradient(135deg, #cbd5e1, #94a3b8); display:flex; align-items:center; justify-content:center; font-weight:bold;">🤖</div>
+              <div>
+                <div style="font-size:0.95rem; font-weight:700;">SilverSaaS Business AI Copilot</div>
+                <div style="font-size:0.75rem; color:#10b981; font-weight:600;">● Online · Tenant Context Connected</div>
+              </div>
+            </div>
+            <button class="btn-silver btn-sm btn-silver-outline" id="clearChatBtn">Clear Chat</button>
+          </div>
+
+          <div class="chat-messages" id="chatMessages">
+            <div class="message-bubble message-ai">
+              <strong>Hello! I am your AI Business Copilot.</strong><br>
+              I am connected directly to your tenant's live CRM, invoices, inventory, and cloud data. How can I assist you with your operations today?
+            </div>
+          </div>
+
+          <!-- Quick Prompts Pill Row -->
+          <div class="chat-suggestions">
+            <div class="suggestion-pill" data-prompt="How is our business doing this month?">📊 Monthly Financials</div>
+            <div class="suggestion-pill" data-prompt="Which invoices are overdue and should I send reminders?">🧾 Overdue Invoices</div>
+            <div class="suggestion-pill" data-prompt="What inventory items are at risk of running out?">⚠️ Low Stock Check</div>
+            <div class="suggestion-pill" data-prompt="How can we increase client retention this quarter?">💡 Retention Strategies</div>
+          </div>
+
+          <!-- Input Bar -->
+          <form class="chat-input-bar" id="copilotForm">
+            <input type="text" id="copilotInput" class="silver-input" placeholder="Ask anything about your business, cashflow, deals, or operations..." autocomplete="off">
+            <button type="submit" class="btn-silver btn-silver-primary" style="white-space:nowrap;">Send</button>
+          </form>
+        </div>
+
+        <!-- Right: AI Special Tools Cards -->
+        <div style="display:flex; flex-direction:column; gap:20px;">
+          <!-- Tool 1: 90-Day Cashflow Forecasting -->
+          <div class="silver-card" style="padding:18px;">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+              <span>📈</span>
+              <h4 style="font-size:0.95rem; font-weight:700;">Predictive Cashflow Model</h4>
+            </div>
+            <p style="font-size:0.775rem; color:#64748b; margin-bottom:12px;">Run a 90-day AI cash projection based on active invoices and deal win probability.</p>
+            <button class="btn-silver btn-sm btn-silver-outline" style="width:100%;" id="runAiForecastBtn">Run 90-Day Forecast</button>
+            <div id="forecastResultBox" style="margin-top:12px; font-size:0.8rem; display:none;"></div>
+          </div>
+
+          <!-- Tool 2: AI Outreach & Reminder Drafter -->
+          <div class="silver-card" style="padding:18px;">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+              <span>✉️</span>
+              <h4 style="font-size:0.95rem; font-weight:700;">Smart Email Drafter</h4>
+            </div>
+            <p style="font-size:0.775rem; color:#64748b; margin-bottom:12px;">Generate polite payment notices, onboarding notes, or pitch follow-ups.</p>
+            <button class="btn-silver btn-sm btn-silver-outline" style="width:100%;" id="openEmailDrafterBtn">Draft Outreach Email</button>
+          </div>
+
+          <!-- Tool 3: AI Expense / Receipt Scanner -->
+          <div class="silver-card" style="padding:18px;">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+              <span>📄</span>
+              <h4 style="font-size:0.95rem; font-weight:700;">OCR Receipt Parser</h4>
+            </div>
+            <p style="font-size:0.775rem; color:#64748b; margin-bottom:12px;">Simulate AI extraction of vendor, line items, and taxes from receipts.</p>
+            <button class="btn-silver btn-sm btn-silver-outline" style="width:100%;" id="openReceiptScannerBtn">Scan Receipt Sample</button>
+          </div>
+
+          <!-- Tool 4: AI Business Health Diagnostics -->
+          <div class="silver-card" style="padding:18px;">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+              <span>🩺</span>
+              <h4 style="font-size:0.95rem; font-weight:700;">Business Health Score</h4>
+            </div>
+            <p style="font-size:0.775rem; color:#64748b; margin-bottom:12px;">Evaluate financial buffer, churn risk, and cloud security posture.</p>
+            <button class="btn-silver btn-sm btn-silver-outline" style="width:100%;" id="runHealthDiagnosticBtn">Generate Diagnostic</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 6: CLOUD INTEGRATION & WEBHOOKS -->
+    <section id="tab-cloud" class="tab-pane" style="display:none;">
+      <!-- Telemetry Highlights -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-header">
+            <span class="stat-title">Cloud Storage Provider</span>
+            <span class="stat-icon">☁️</span>
+          </div>
+          <div class="stat-value" style="font-size:1.4rem;" id="cloudProviderText">AWS S3</div>
+          <div class="stat-footer">
+            <span class="badge badge-paid">Encrypted (KMS)</span>
+            <span>Multi-Tenant Bucket</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <span class="stat-title">Primary Region</span>
+            <span class="stat-icon">🌍</span>
+          </div>
+          <div class="stat-value" style="font-size:1.4rem;" id="cloudRegionText">us-east-1</div>
+          <div class="stat-footer">
+            <span class="badge badge-silver">Replication Ready</span>
+            <span id="cloudLatencyText">24ms Roundtrip</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <span class="stat-title">Tenant Storage Used</span>
+            <span class="stat-icon">💾</span>
+          </div>
+          <div class="stat-value" style="font-size:1.4rem;" id="cloudStorageUsed">0 MB</div>
+          <div class="stat-footer">
+            <span class="badge badge-silver">Quota 50 GB</span>
+            <span id="cloudFilesCount">0 Files Stored</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <span class="stat-title">Event Bus Webhook</span>
+            <span class="stat-icon">⚡</span>
+          </div>
+          <div class="stat-value" style="font-size:1.4rem;">Active</div>
+          <div class="stat-footer">
+            <button class="btn-silver btn-sm" id="testWebhookBtn" style="padding:2px 8px; font-size:0.7rem;">Test Ping Webhook</button>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns: 1.6fr 1fr; gap:24px;">
+        <!-- Left: Cloud File Catalog -->
+        <div class="silver-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+            <div>
+              <h3 style="font-size:1.1rem; font-weight:700;">Multi-Tenant Cloud Documents</h3>
+              <p style="font-size:0.8rem; color:#64748b;">Direct upload using S3 Presigned URLs with tenant prefix isolation.</p>
+            </div>
+            <button class="btn-silver btn-silver-primary" id="openCloudUploadModalBtn">+ Upload File</button>
+          </div>
+
+          <div class="table-responsive">
+            <table class="silver-table">
+              <thead>
+                <tr>
+                  <th>Filename</th>
+                  <th>Size</th>
+                  <th>Cloud S3 Key</th>
+                  <th>Uploaded By</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="cloudFilesTableBody">
+                <tr><td colspan="5" style="text-align:center; color:#94a3b8;">Loading cloud storage catalog...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Right: Cloud Pub/Sub Webhook Event Stream -->
+        <div class="silver-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+            <h3 style="font-size:1.1rem; font-weight:700;">Cloud Audit & Webhook Bus</h3>
+            <span class="badge badge-paid">Live Event Stream</span>
+          </div>
+          <div id="cloudEventsList" style="display:flex; flex-direction:column; gap:10px; max-height:480px; overflow-y:auto;">
+            <div style="font-size:0.8rem; color:#94a3b8; text-align:center; padding:20px;">Loading event stream...</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 7: ORGANIZATION & TEAM SETTINGS -->
+    <section id="tab-settings" class="tab-pane" style="display:none;">
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:24px;">
+        <!-- Tenant Organization Settings -->
+        <div class="silver-card">
+          <h3 style="font-size:1.1rem; font-weight:700; margin-bottom:14px;">Organization Profile & Cloud Region</h3>
+          <form id="tenantSettingsForm">
+            <div class="form-group">
+              <label class="form-label">Organization Name</label>
+              <input type="text" id="settingTenantName" class="silver-input" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Industry Classification</label>
+              <input type="text" id="settingIndustry" class="silver-input">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Cloud Deployment Region</label>
+              <select id="settingCloudRegion" class="silver-select">
+                <option value="us-east-1">US East (N. Virginia) - AWS us-east-1</option>
+                <option value="eu-west-1">EU West (Ireland) - AWS eu-west-1</option>
+                <option value="ap-southeast-1">Asia Pacific (Singapore) - AWS ap-southeast-1</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Subscription Tier</label>
+              <input type="text" id="settingPlan" class="silver-input" value="Enterprise Pro" readonly style="background:#f1f5f9; cursor:not-allowed;">
+            </div>
+            <div style="margin-top:20px; display:flex; justify-content:flex-end;">
+              <button type="submit" class="btn-silver btn-silver-primary">Save Organization Settings</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Team Members & RBAC -->
+        <div class="silver-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+            <div>
+              <h3 style="font-size:1.1rem; font-weight:700;">Team Members & RBAC</h3>
+              <p style="font-size:0.775rem; color:#64748b;">Manage tenant permissions and access roles</p>
+            </div>
+            <button class="btn-silver btn-sm" id="openInviteMemberModalBtn">+ Add Member</button>
+          </div>
+
+          <div class="table-responsive">
+            <table class="silver-table">
+              <thead>
+                <tr>
+                  <th>Member Name</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                </tr>
+              </thead>
+              <tbody id="teamMembersTableBody">
+                <tr><td colspan="3" style="text-align:center; color:#94a3b8;">Loading team members...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== MODALS ==================== -->
+
+  <!-- AUTH MODAL (Login / Register / Switch Tenant) -->
+  <dialog class="silver-modal" id="authModal">
+    <div class="modal-header">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <span style="font-size:1.2rem;">⚡</span>
+        <h3 style="font-size:1.1rem; font-weight:700;">AuraSilver Authentication</h3>
+      </div>
+    </div>
+    <div class="modal-body">
+      <!-- Tabs for Sign In vs Register -->
+      <div style="display:flex; gap:8px; margin-bottom:16px; border-bottom:1px solid #e2e8f0; padding-bottom:8px;">
+        <button class="btn-silver btn-sm active" id="authTabSignInBtn" type="button">Sign In</button>
+        <button class="btn-silver btn-sm btn-silver-outline" id="authTabRegisterBtn" type="button">Register New Business</button>
+      </div>
+
+      <!-- Sign In Form -->
+      <form id="signInForm">
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" id="loginEmail" class="silver-input" required value="alex@apexprecision.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" id="loginPassword" class="silver-input" required value="admin123">
+        </div>
+
+        <!-- 1-Click Demo Accounts -->
+        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:12px; margin-bottom:16px;">
+          <div style="font-size:0.75rem; font-weight:700; color:#475569; margin-bottom:8px; text-transform:uppercase;">1-Click Instant Demo Credentials:</div>
+          <div style="display:flex; flex-direction:column; gap:6px;">
+            <button type="button" class="btn-silver btn-sm btn-silver-outline quick-login-btn" data-email="alex@apexprecision.com" data-pass="admin123" style="text-align:left; justify-content:flex-start;">
+              🏢 <strong>Apex Precision Studio</strong> (Alex Rivera - Owner)
+            </button>
+            <button type="button" class="btn-silver btn-sm btn-silver-outline quick-login-btn" data-email="elena@silverline.med" data-pass="demo123" style="text-align:left; justify-content:flex-start;">
+              🏥 <strong>Silverline Medical & Labs</strong> (Dr. Elena Vance - Owner)
+            </button>
+            <button type="button" class="btn-silver btn-sm btn-silver-outline quick-login-btn" data-email="marcus@novafreight.com" data-pass="demo123" style="text-align:left; justify-content:flex-start;">
+              🚢 <strong>Nova Global Freight</strong> (Marcus Chen - Owner)
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-silver btn-silver-primary" style="width:100%;">Sign In to Workspace</button>
+      </form>
+
+      <!-- Register Form -->
+      <form id="registerForm" style="display:none;">
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input type="text" id="regName" class="silver-input" placeholder="Sarah Connor">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Business Email</label>
+          <input type="email" id="regEmail" class="silver-input" placeholder="sarah@cyberdyne.io">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" id="regPassword" class="silver-input" placeholder="••••••••">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Organization / Business Name</label>
+          <input type="text" id="regOrgName" class="silver-input" placeholder="Cyberdyne Robotics">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Industry</label>
+          <input type="text" id="regIndustry" class="silver-input" placeholder="Robotics & AI">
+        </div>
+        <button type="submit" class="btn-silver btn-silver-primary" style="width:100%;">Create Business Account</button>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- TENANT SWITCHER MODAL -->
+  <dialog class="silver-modal" id="tenantModal">
+    <div class="modal-header">
+      <h3 style="font-size:1.1rem; font-weight:700;">Select Organization Tenant</h3>
+      <button type="button" class="btn-silver btn-sm modal-close-btn" data-modal="tenantModal">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="tenantListGroup" style="display:flex; flex-direction:column; gap:8px; margin-bottom:16px;"></div>
+      <div style="border-top:1px solid #e2e8f0; padding-top:14px;">
+        <h4 style="font-size:0.875rem; font-weight:700; margin-bottom:8px;">+ Provision New Organization</h4>
+        <form id="newTenantForm" style="display:flex; gap:8px;">
+          <input type="text" id="newTenantName" class="silver-input" placeholder="New Company Name" required>
+          <button type="submit" class="btn-silver btn-silver-primary" style="white-space:nowrap;">Create</button>
+        </form>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- ADD CUSTOMER MODAL -->
+  <dialog class="silver-modal" id="customerModal">
+    <div class="modal-header">
+      <h3 style="font-size:1.1rem; font-weight:700;">Add Client / CRM Account</h3>
+      <button type="button" class="btn-silver btn-sm modal-close-btn" data-modal="customerModal">✕</button>
+    </div>
+    <form id="customerForm">
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Contact / Account Name *</label>
+          <input type="text" id="custName" class="silver-input" required placeholder="Elena Rostova">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email Address *</label>
+          <input type="email" id="custEmail" class="silver-input" required placeholder="elena@client.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Company Name</label>
+          <input type="text" id="custCompany" class="silver-input" placeholder="Acme Dynamics">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Phone Number</label>
+          <input type="text" id="custPhone" class="silver-input" placeholder="+1 (555) 019-2931">
+        </div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+          <div class="form-group">
+            <label class="form-label">Pipeline Stage</label>
+            <select id="custStatus" class="silver-select">
+              <option value="lead">Lead</option>
+              <option value="opportunity">Opportunity</option>
+              <option value="active">Active Client</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Estimated Deal Value ($)</label>
+            <input type="number" id="custDealValue" class="silver-input" value="15000">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Notes</label>
+          <textarea id="custNotes" class="silver-textarea" rows="2" placeholder="Key contact details, requirements..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-silver btn-silver-outline modal-close-btn" data-modal="customerModal">Cancel</button>
+        <button type="submit" class="btn-silver btn-silver-primary">Save Customer</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ADD INVOICE MODAL -->
+  <dialog class="silver-modal" id="invoiceModal" style="max-width:700px;">
+    <div class="modal-header">
+      <h3 style="font-size:1.1rem; font-weight:700;">Create Client Invoice</h3>
+      <button type="button" class="btn-silver btn-sm modal-close-btn" data-modal="invoiceModal">✕</button>
+    </div>
+    <form id="invoiceForm">
+      <div class="modal-body">
+        <div style="display:grid; grid-template-columns: 1.5fr 1fr; gap:12px;">
+          <div class="form-group">
+            <label class="form-label">Client Name *</label>
+            <input type="text" id="invClientName" class="silver-input" required placeholder="Quantum Dynamics Ltd">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Invoice Number</label>
+            <input type="text" id="invNumber" class="silver-input" placeholder="INV-2026-003">
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+          <div class="form-group">
+            <label class="form-label">Issue Date</label>
+            <input type="date" id="invIssueDate" class="silver-input">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Due Date</label>
+            <input type="date" id="invDueDate" class="silver-input">
+          </div>
+        </div>
+
+        <div style="margin-top:14px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <label class="form-label" style="margin-bottom:0;">Line Items</label>
+            <button type="button" class="btn-silver btn-sm" id="addLineItemBtn">+ Add Item</button>
+          </div>
+          <div id="lineItemsContainer" style="display:flex; flex-direction:column; gap:8px;">
+            <div class="line-item-row" style="display:grid; grid-template-columns: 3fr 1fr 1.2fr auto; gap:8px; align-items:center;">
+              <input type="text" class="silver-input item-desc" placeholder="Service / Item Description" value="Consulting & Cloud Architecture" required>
+              <input type="number" class="silver-input item-qty" placeholder="Qty" value="1" min="1" required>
+              <input type="number" class="silver-input item-price" placeholder="Price ($)" value="3500" min="0" step="0.01" required>
+              <button type="button" class="btn-silver btn-sm" style="color:#ef4444;" onclick="this.parentElement.remove()">✕</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-silver btn-silver-outline modal-close-btn" data-modal="invoiceModal">Cancel</button>
+        <button type="submit" class="btn-silver btn-silver-primary">Generate & Issue Invoice</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ADD INVENTORY ITEM MODAL -->
+  <dialog class="silver-modal" id="inventoryModal">
+    <div class="modal-header">
+      <h3 style="font-size:1.1rem; font-weight:700;">Add Inventory Product SKU</h3>
+      <button type="button" class="btn-silver btn-sm modal-close-btn" data-modal="inventoryModal">✕</button>
+    </div>
+    <form id="inventoryForm">
+      <div class="modal-body">
+        <div style="display:grid; grid-template-columns: 1fr 1.5fr; gap:12px;">
+          <div class="form-group">
+            <label class="form-label">SKU Code *</label>
+            <input type="text" id="itemSku" class="silver-input" required placeholder="TITAN-ROD-8MM">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Product Name *</label>
+            <input type="text" id="itemName" class="silver-input" required placeholder="Titanium Rod Grade 5 (8mm)">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Category</label>
+          <input type="text" id="itemCategory" class="silver-input" placeholder="Raw Materials">
+        </div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+          <div class="form-group">
+            <label class="form-label">Initial Quantity</label>
+            <input type="number" id="itemQty" class="silver-input" value="50" min="0">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Reorder Safety Threshold</label>
+            <input type="number" id="itemThreshold" class="silver-input" value="15" min="1">
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+          <div class="form-group">
+            <label class="form-label">Unit Selling Price ($)</label>
+            <input type="number" id="itemUnitPrice" class="silver-input" value="85.00" step="0.01">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Cost Price ($)</label>
+            <input type="number" id="itemCostPrice" class="silver-input" value="45.00" step="0.01">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-silver btn-silver-outline modal-close-btn" data-modal="inventoryModal">Cancel</button>
+        <button type="submit" class="btn-silver btn-silver-primary">Add SKU to Inventory</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- CLOUD UPLOAD SIMULATOR MODAL -->
+  <dialog class="silver-modal" id="cloudUploadModal">
+    <div class="modal-header">
+      <h3 style="font-size:1.1rem; font-weight:700;">Cloud Object Storage Upload</h3>
+      <button type="button" class="btn-silver btn-sm modal-close-btn" data-modal="cloudUploadModal">✕</button>
+    </div>
+    <form id="cloudUploadForm">
+      <div class="modal-body">
+        <p style="font-size:0.8rem; color:#64748b; margin-bottom:14px;">
+          This simulates direct-to-cloud upload via AWS S3 / GCS presigned URLs with tenant cryptography.
+        </p>
+        <div class="form-group">
+          <label class="form-label">Document Filename *</label>
+          <input type="text" id="uploadFilename" class="silver-input" required placeholder="Q4_Financial_Audit_Report.pdf">
+        </div>
+        <div class="form-group">
+          <label class="form-label">File Type / MIME</label>
+          <select id="uploadMime" class="silver-select">
+            <option value="application/pdf">PDF Document (.pdf)</option>
+            <option value="application/vnd.ms-excel">Excel Spreadsheet (.xlsx)</option>
+            <option value="image/png">High-Res PNG Graphic (.png)</option>
+            <option value="application/step">CAD / 3D Model (.step)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Simulated Size (Bytes)</label>
+          <input type="number" id="uploadSize" class="silver-input" value="3842000">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-silver btn-silver-outline modal-close-btn" data-modal="cloudUploadModal">Cancel</button>
+        <button type="submit" class="btn-silver btn-silver-primary">Sign & Upload to Cloud</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- INVITE MEMBER MODAL -->
+  <dialog class="silver-modal" id="inviteMemberModal">
+    <div class="modal-header">
+      <h3 style="font-size:1.1rem; font-weight:700;">Add Team Member to Organization</h3>
+      <button type="button" class="btn-silver btn-sm modal-close-btn" data-modal="inviteMemberModal">✕</button>
+    </div>
+    <form id="inviteMemberForm">
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Registered User Email *</label>
+          <input type="email" id="inviteEmail" class="silver-input" required placeholder="elena@silverline.med">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Assigned Role</label>
+          <select id="inviteRole" class="silver-select">
+            <option value="admin">Admin (Full Management)</option>
+            <option value="member" selected>Member (Standard Operations)</option>
+            <option value="viewer">Viewer (Read Only)</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-silver btn-silver-outline modal-close-btn" data-modal="inviteMemberModal">Cancel</button>
+        <button type="submit" class="btn-silver btn-silver-primary">Add Member</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- AI EMAIL DRAFTER MODAL -->
+  <dialog class="silver-modal" id="emailDrafterModal" style="max-width:680px;">
+    <div class="modal-header">
+      <h3 style="font-size:1.1rem; font-weight:700;">AI Smart Email & Client Outreach Drafter</h3>
+      <button type="button" class="btn-silver btn-sm modal-close-btn" data-modal="emailDrafterModal">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:12px;">
+        <div class="form-group">
+          <label class="form-label">Outreach Type</label>
+          <select id="draftTypeSelect" class="silver-select">
+            <option value="payment_reminder">Payment Reminder</option>
+            <option value="proposal_followup">Proposal Follow-Up</option>
+            <option value="welcome_onboard">Welcome / Onboarding</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Client Name</label>
+          <input type="text" id="draftClientName" class="silver-input" placeholder="Quantum Dynamics Ltd">
+        </div>
+      </div>
+      <button type="button" class="btn-silver btn-silver-primary btn-sm" id="generateEmailDraftBtn" style="margin-bottom:14px;">Generate Draft</button>
+      
+      <div class="form-group">
+        <label class="form-label">Subject</label>
+        <input type="text" id="draftSubjectOutput" class="silver-input" readonly>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Body</label>
+        <textarea id="draftBodyOutput" class="silver-textarea" rows="8" readonly></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn-silver btn-silver-outline modal-close-btn" data-modal="emailDrafterModal">Close</button>
+      <button type="button" class="btn-silver btn-silver-primary" onclick="navigator.clipboard.writeText(document.getElementById('draftBodyOutput').value); alert('Copied to clipboard!');">Copy to Clipboard</button>
+    </div>
+  </dialog>
+
+  <!-- AI RECEIPT SCANNER MODAL -->
+  <dialog class="silver-modal" id="receiptScannerModal" style="max-width:680px;">
+    <div class="modal-header">
+      <h3 style="font-size:1.1rem; font-weight:700;">AI Smart Receipt & Expense OCR Scanner</h3>
+      <button type="button" class="btn-silver btn-sm modal-close-btn" data-modal="receiptScannerModal">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="display:grid; grid-template-columns: 1.5fr 1fr; gap:12px; margin-bottom:12px;">
+        <div class="form-group">
+          <label class="form-label">Vendor Name</label>
+          <input type="text" id="scanVendorInput" class="silver-input" value="Titan Industrial Supply Co.">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Total Amount ($)</label>
+          <input type="number" id="scanTotalInput" class="silver-input" value="2490.00" step="0.01">
+        </div>
+      </div>
+      <button type="button" class="btn-silver btn-silver-primary btn-sm" id="runReceiptScanBtn" style="margin-bottom:16px;">Scan & Extract Line Items</button>
+
+      <div id="receiptScanOutput" style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:14px; font-size:0.85rem; display:none;">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn-silver btn-silver-outline modal-close-btn" data-modal="receiptScannerModal">Close</button>
+    </div>
+  </dialog>
+
+  <!-- Scripts -->
+  <script src="/js/api.js"></script>
+  <script src="/js/charts.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>
